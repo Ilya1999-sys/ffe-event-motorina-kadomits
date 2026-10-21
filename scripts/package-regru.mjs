@@ -1,4 +1,4 @@
-import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,5 +10,4 @@ await mkdir(path.join(dist, 'api'), { recursive: true });
 await cp(path.join(root, 'server', 'submit.php'), path.join(dist, 'api', 'submit.php'));
 await cp(path.join(root, 'server', 'config.example.php'), path.join(dist, 'api', 'config.example.php'));
 await cp(path.join(root, 'server', 'api.htaccess'), path.join(dist, 'api', '.htaccess'));
-await writeFile(path.join(dist, '.htaccess'), 'Options -Indexes\n');
 console.log(`Пакет для REG.RU: ${dist}`);

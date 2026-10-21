@@ -1,0 +1,71 @@
+name: Deploy event site to REG.RU
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Show changes without uploading
+        type: boolean
+        required: true
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: regru-event-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build website
+        run: npm run build
+
+      - name: Check FTP settings
+        env:
+          FTP_USERNAME: ${{ secrets.REGRU_FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.REGRU_FTP_PASSWORD }}
+          FTP_SERVER_DIR: ${{ vars.REGRU_FTP_SERVER_DIR }}
+        run: |
+          set -eu
+          for name in FTP_USERNAME FTP_PASSWORD FTP_SERVER_DIR; do
+            if [ -z "$(printenv "$name")" ]; then
+              echo "::error::$name is missing. See README.md."
+              exit 1
+            fi
+          done
+          case "$FTP_SERVER_DIR" in
+            /*/) ;;
+            *) echo "::error::REGRU_FTP_SERVER_DIR must start and end with /."; exit 1 ;;
+          esac
+
+      - name: Publish website
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: server277.hosting.reg.ru
+          username: ${{ secrets.REGRU_FTP_USERNAME }}
+          password: ${{ secrets.REGRU_FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          server-dir: ${{ vars.REGRU_FTP_SERVER_DIR }}
+          local-dir: ./regru-dist/
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            api/config.php

@@ -25,9 +25,15 @@ npm run dev
 npm run build
 ```
 
-Сборка создаст `regru-dist/`: статические файлы, PHP-обработчик и пример конфигурации. Загрузите **содержимое** этой папки в корневой каталог нового сайта в панели REG.RU, как в проекте портфолио. После загрузки создайте `api/config.php` на хостинге и проверьте тестовый отклик. В хостинге нужны PHP с расширениями `curl` и `fileinfo`, HTTPS, `upload_max_filesize` не меньше 10 МБ и `post_max_size` не меньше 12 МБ. MySQL для этого лендинга не требуется.
+Сборка создаст `regru-dist/`: статические файлы, PHP-обработчик и пример конфигурации. Корневой `.htaccess` хостинга не входит в сборку: в нём уже настроено перенаправление на HTTPS. Содержимое папки опубликовано в `/www/ffe-events.ru` на REG.RU. После подключения Apps Script создайте `api/config.php` на хостинге и проверьте тестовый отклик. В хостинге нужны PHP с расширениями `curl` и `fileinfo`, HTTPS, `upload_max_filesize` не меньше 10 МБ и `post_max_size` не меньше 12 МБ. MySQL для этого лендинга не требуется.
 
-Исходники хранятся в [ffe-event-motorina-kadomits](https://github.com/Ilya1999-sys/ffe-event-motorina-kadomits). FTP-деплой для REG.RU можно настроить по образцу портфолио после добавления сайта в панели хостинга. `regru-dist/`, личные отклики и секреты исключены из Git.
+Исходники хранятся в [ffe-event-motorina-kadomits](https://github.com/Ilya1999-sys/ffe-event-motorina-kadomits). Workflow `.github/workflows/deploy-regru.yml` собирает сайт и публикует его при каждом push в `main`. Ручной запуск через GitHub Actions по умолчанию работает без загрузки (`dry_run = true`). Перед первым запуском:
+
+1. Создайте в REG.RU отдельного FTP-пользователя с домашней директорией `/www/ffe-events.ru`. Адрес сервера — `server277.hosting.reg.ru`, защищённый FTP (FTPS) работает на порту `21`.
+2. В настройках GitHub-репозитория добавьте Actions secrets `REGRU_FTP_USERNAME` и `REGRU_FTP_PASSWORD` для этого пользователя и Actions variable `REGRU_FTP_SERVER_DIR` со значением `/`. Если используете существующего FTP-пользователя с домашней директорией `/`, укажите `/www/ffe-events.ru/`.
+3. Запустите workflow вручную с `dry_run = true`, проверьте список файлов, затем повторите с `dry_run = false`. После этого каждый push в `main` будет обновлять сайт.
+
+FTP-пароль, `api/config.php`, `regru-dist/` и личные отклики не добавляйте в Git. Workflow не удаляет сторонние файлы в каталоге сайта, в том числе корневой `.htaccess` и конфигурацию формы.
 
 ## Что где лежит
 
