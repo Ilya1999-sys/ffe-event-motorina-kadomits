@@ -1,0 +1,10 @@
+{
+  "name": "ira-kadomets-nov-2026",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.mjs",
+    "build": "node scripts/package-regru.mjs"
+  }
+}

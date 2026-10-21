@@ -1,0 +1,7 @@
+regru-dist/
+.local-submissions/
+server/config.php
+site/api/config.php
+node_modules/
+.DS_Store
+preview-*.png
