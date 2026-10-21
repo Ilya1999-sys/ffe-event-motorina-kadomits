@@ -1,5 +1,6 @@
 const SHEET_ID = '1WjuYVQz-R3EakW4IVwxY1Nj_J5vTohr80Q8u6MF0s10';
 const SHEET_NAME = 'Отклики';
+const DEFAULT_DRIVE_FOLDER_ID = '1Uw_sTRm4ZtMEedN6mCegK2S11MCePRmk';
 const HEADERS = ['ID', 'Дата и время', 'Имя', 'Контакт', 'Резюме', 'Имя файла', 'Сопроводительное письмо', 'Решение тестового', 'Статус', 'Оценка', 'Заметки'];
 
 function setupSheet() {
@@ -61,7 +62,7 @@ function doPost(event) {
           String(data.resumeFile.mime || 'application/octet-stream'),
           fileName
         );
-        const folderId = properties.getProperty('DRIVE_FOLDER_ID');
+        const folderId = properties.getProperty('DRIVE_FOLDER_ID') || DEFAULT_DRIVE_FOLDER_ID;
         const file = folderId ? DriveApp.getFolderById(folderId).createFile(blob) : DriveApp.createFile(blob);
         resume = file.getUrl();
       }
