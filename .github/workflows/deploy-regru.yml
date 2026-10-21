@@ -48,7 +48,7 @@ jobs:
             fi
           done
           case "$FTP_SERVER_DIR" in
-            /*/) ;;
+            /|/*/) ;;
             *) echo "::error::REGRU_FTP_SERVER_DIR must start and end with /."; exit 1 ;;
           esac
 
