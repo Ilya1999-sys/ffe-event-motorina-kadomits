@@ -9,10 +9,11 @@ function showPhoto(person) {
 function positionPhoto(zone, event, firstPosition = false) {
   const photo = photos.get(zone.dataset.person);
   const bounds = heroInner.getBoundingClientRect();
+  const zoneBounds = zone.getBoundingClientRect();
   const halfWidth = photo.offsetWidth / 2;
   const halfHeight = photo.offsetHeight / 2;
-  const x = Math.max(halfWidth, Math.min(bounds.width - halfWidth, event.clientX - bounds.left));
-  const y = Math.max(halfHeight, Math.min(bounds.height - halfHeight, event.clientY - bounds.top));
+  const x = Math.max(zoneBounds.left + halfWidth, Math.min(zoneBounds.right - halfWidth, event.clientX)) - bounds.left;
+  const y = Math.max(zoneBounds.top + halfHeight, Math.min(zoneBounds.bottom - halfHeight, event.clientY)) - bounds.top;
   if (firstPosition) photo.style.transition = 'none';
   photo.style.left = `${x}px`;
   photo.style.top = `${y}px`;
