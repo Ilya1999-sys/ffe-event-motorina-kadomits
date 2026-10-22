@@ -75,8 +75,16 @@ jobs:
             **/.git*/**
             **/node_modules/**
 
+      - name: Diagnose Google form backend without saving data
+        if: github.event_name == 'push' && github.event.head_commit.message == 'Diagnose form backend'
+        env:
+          APPS_SCRIPT_URL: https://script.google.com/macros/s/AKfycbwmVLiTCG7wNVzVdjbEFlc12zPIDSRy8HEfY03gUoeKFgFRYJ_PscX9SlU8XlBt--ickw/exec
+          APPS_SCRIPT_SECRET: ${{ secrets.APPS_SCRIPT_SECRET }}
+        run: |
+          node --input-type=module -e 'const response=await fetch(process.env.APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({secret:process.env.APPS_SCRIPT_SECRET,consent:false})}); const body=await response.text(); console.log(`Apps Script HTTP ${response.status}: ${body.slice(0,500)}`);'
+
       - name: Verify production form with a small file
-        if: github.event_name == 'push' && github.event.head_commit.message == 'Verify production form'
+        if: github.event_name == 'push' && github.event.head_commit.message == 'Diagnose form backend'
         run: |
           printf 'Тестовый файл для проверки формы FFE.\n' > "$RUNNER_TEMP/ffe-resume.txt"
           status=$(curl --silent --show-error --max-time 40 \
