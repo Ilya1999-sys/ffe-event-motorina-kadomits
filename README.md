@@ -34,7 +34,7 @@ npm run build
 Исходники хранятся в [ffe-event-motorina-kadomits](https://github.com/Ilya1999-sys/ffe-event-motorina-kadomits). Workflow `.github/workflows/deploy-regru.yml` собирает сайт и публикует его при каждом push в `main`. Ручной запуск через GitHub Actions по умолчанию работает без загрузки (`dry_run = true`). Перед первым запуском:
 
 1. Создайте в REG.RU отдельного FTP-пользователя с домашней директорией `/www/ffe-events.ru`. Адрес сервера — `server277.hosting.reg.ru`, защищённый FTP (FTPS) работает на порту `21`.
-2. В настройках GitHub-репозитория добавьте Actions secrets `REGRU_FTP_USERNAME`, `REGRU_FTP_PASSWORD` и `APPS_SCRIPT_SECRET` для этого пользователя и формы, а также Actions variable `REGRU_FTP_SERVER_DIR` со значением `/`. Если используете существующего FTP-пользователя с домашней директорией `/`, укажите `/www/ffe-events.ru/`.
+2. В настройках GitHub-репозитория добавьте Actions secrets `REGRU_FTP_USERNAME` и `REGRU_FTP_PASSWORD` для FTP-пользователя, а также `APPS_SCRIPT_SECRET` со значением свойства Apps Script `SUBMISSION_SECRET`. Задайте Actions variable `REGRU_FTP_SERVER_DIR` со значением `/`. Если используете существующего FTP-пользователя с домашней директорией `/`, укажите `/www/ffe-events.ru/`.
 3. Запустите workflow вручную с `dry_run = true`, проверьте список файлов, затем повторите с `dry_run = false`. После этого каждый push в `main` будет обновлять сайт.
 
 FTP-пароль, `api/config.php`, `regru-dist/` и личные отклики не добавляйте в Git. Workflow не удаляет сторонние файлы в каталоге сайта, в том числе корневой `.htaccess` и конфигурацию формы.
