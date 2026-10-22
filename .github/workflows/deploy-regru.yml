@@ -81,7 +81,7 @@ jobs:
           printf 'Тестовый файл для проверки формы FFE.\n' > "$RUNNER_TEMP/ffe-resume.txt"
           response=$(curl --fail-with-body --silent --show-error --max-time 40 \
             --form 'name=ТЕСТ — проверка формы' \
-            --form 'contact=@ffe_smoke_test' \
+            --form-string 'contact=@ffe_smoke_test' \
             --form 'cover_letter=Автоматическая проверка. Эту строку можно удалить.' \
             --form 'solution=Проверка записи в Google Таблицу и загрузки файла на Диск.' \
             --form 'consent=1' \
