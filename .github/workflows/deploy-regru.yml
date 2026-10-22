@@ -52,6 +52,12 @@ jobs:
             *) echo "::error::REGRU_FTP_SERVER_DIR must start and end with /."; exit 1 ;;
           esac
 
+      - name: Configure application form
+        env:
+          APPS_SCRIPT_URL: https://script.google.com/macros/s/AKfycbwmVLiTCG7wNVzVdjbEFlc12zPIDSRy8HEfY03gUoeKFgFRYJ_PscX9SlU8XlBt--ickw/exec
+          APPS_SCRIPT_SECRET: ${{ secrets.APPS_SCRIPT_SECRET }}
+        run: node scripts/write-production-config.mjs
+
       - name: Publish website
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
@@ -68,4 +74,3 @@ jobs:
             **/.git*
             **/.git*/**
             **/node_modules/**
-            api/config.php
