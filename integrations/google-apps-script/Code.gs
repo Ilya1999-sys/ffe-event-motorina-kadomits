@@ -36,6 +36,12 @@ function setupSheet() {
   return sheet;
 }
 
+function authorizeDrive() {
+  const folder = DriveApp.getFolderById(DEFAULT_DRIVE_FOLDER_ID);
+  const file = folder.createFile('ffe-authorization-check.txt', 'Проверка доступа к папке резюме');
+  file.setTrashed(true);
+}
+
 function doPost(event) {
   try {
     const data = JSON.parse(event.postData.contents || '{}');
