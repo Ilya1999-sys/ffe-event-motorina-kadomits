@@ -1,8 +1,10 @@
 const photos = new Map([...document.querySelectorAll('[data-photo]')].map((node) => [node.dataset.photo, node]));
 const zones = document.querySelectorAll('[data-person]');
 const heroInner = document.querySelector('.hero__inner');
+const photoBreakpoint = window.matchMedia('(min-width: 768px)');
 
 function showPhoto(person) {
+  if (!photoBreakpoint.matches) person = null;
   for (const [name, photo] of photos) photo.classList.toggle('is-visible', name === person);
 }
 
@@ -25,12 +27,19 @@ function positionPhoto(zone, event, firstPosition = false) {
 
 for (const zone of zones) {
   zone.addEventListener('pointerenter', (event) => {
+    if (event.pointerType === 'touch' || !photoBreakpoint.matches) return;
     positionPhoto(zone, event, true);
     showPhoto(zone.dataset.person);
   });
-  zone.addEventListener('pointermove', (event) => positionPhoto(zone, event));
-  zone.addEventListener('pointerleave', () => showPhoto(null));
+  zone.addEventListener('pointermove', (event) => {
+    if (event.pointerType !== 'touch' && photoBreakpoint.matches) positionPhoto(zone, event);
+  });
+  zone.addEventListener('pointerleave', (event) => {
+    if (event.relatedTarget?.closest?.('.hero__zone')) return;
+    showPhoto(null);
+  });
 }
+photoBreakpoint.addEventListener('change', () => showPhoto(null));
 window.addEventListener('blur', () => showPhoto(null));
 
 const stageSection = document.querySelector('.stages');
