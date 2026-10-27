@@ -87,8 +87,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offse
 .experts__heading{display:flex;flex-direction:column;align-items:center;gap:12px}
 .experts__sticker{background:var(--cream);transform:rotate(-3deg)}
 .expert-grid{display:grid;grid-template-columns:repeat(4,minmax(0,360px));justify-content:center;gap:20px;margin-top:80px}
-.expert-card{min-height:370px;display:flex;flex-direction:column;align-items:center;border:1px solid var(--blue);padding:12px;text-align:center;text-decoration:none;transition:background-color .2s ease,transform .2s ease}
-.expert-card:hover{background:color-mix(in srgb,var(--color-blue) 8%,transparent);transform:translateY(-5px)}
+.expert-card{min-height:370px;display:flex;flex-direction:column;align-items:center;border:1px solid var(--blue);padding:12px;text-align:center}
 .expert-card img{width:200px;height:250px;object-fit:cover;margin-bottom:20px}
 .expert-card__name{font-size:var(--type-h4);font-weight:600;line-height:var(--leading-heading);margin-bottom:8px;white-space:nowrap}
 .expert-card__role{font-size:var(--type-t1);line-height:var(--leading-t1);color:var(--color-ice);overflow-wrap:anywhere}
@@ -248,4 +247,4 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offse
   .contact-card{height:130px;padding:12px}
   .contact-card .sticker{padding:12px 20px}
 }
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button,.nav a,.hero__photo,.expert-card,.contact-card,.prizes__books img{transition:none}.stage-card{will-change:auto}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button,.nav a,.hero__photo,.contact-card,.prizes__books img{transition:none}.stage-card{will-change:auto}}
